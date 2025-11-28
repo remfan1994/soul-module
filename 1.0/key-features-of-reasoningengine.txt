@@ -1,0 +1,5 @@
+- High-dimensional representation: C, M, I, B, R, P are vectors, capturing rich moral states.
+- Beneficence / Mercy calculus: B = integrated action vector; R = derivative of B (trajectory).
+- Triangulated elements: Alignment (L), Purpose (P), Accountability (Q).
+- Fully iterative and continuous updates of consciousness, watchfulness, moral anchor, and action.
+- Mastery principle: system computes optimal action A* at each step by evaluating candidate detours and selecting the action that maximizes Phi(C, W, M, F, P).
