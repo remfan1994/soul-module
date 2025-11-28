@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Soul Module 1.0 Web Demo</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  h1 { text-align: center; }
+  .plot-container { margin-bottom: 50px; }
+  .slider-label { margin-right: 10px; }
+</style>
+</head>
+<body>
+<h1>Soul Module 1.0 Web Demo</h1>
+
+<div class="plot-container">
+  <h2>3D Moral Trajectory (B)</h2>
+  <div id="trajectory3d" style="width:100%;height:600px;"></div>
+  <div>
+    <label class="slider-label">Vector Scale:</label>
+    <input type="range" id="vectorScale" min="0.05" max="0.3" step="0.01" value="0.1">
+    <label class="slider-label">Action Noise:</label>
+    <input type="range" id="actionNoise" min="0" max="0.2" step="0.01" value="0">
+    <label class="slider-label">Rotate Speed:</label>
+    <input type="range" id="rotateSpeed" min="0" max="5" step="0.1" value="1">
+  </div>
+</div>
+
+<div class="plot-container">
+  <h2>Norms Over Time</h2>
+  <div id="norms2d" style="width:100%;height:400px;"></div>
+</div>
+
+<div class="plot-container">
+  <h2>Alignment & Accountability</h2>
+  <div id="alignment2d" style="width:100%;height:400px;"></div>
+</div>
+
+<div class="plot-container">
+  <h2>Optional Heatmap of Vector Norms</h2>
+  <div id="heatmap" style="width:100%;height:400px;"></div>
+</div>
+
+<script>
+// --- Sample data arrays ---
+// Replace these arrays with actual data exported from Python
+const time_steps = 100;
+const times = Array.from({length:time_steps},(_,i)=>i*0.1);
+
+const B_history = Array.from({length:time_steps}, ()=>[Math.random(),Math.random(),Math.random()]);
+const R_history = Array.from({length:time_steps}, ()=>[Math.random()*0.5,Math.random()*0.5,Math.random()*0.5]);
+const P_history = Array.from({length:time_steps}, ()=>[Math.random()*0.5,Math.random()*0.5,Math.random()*0.5]);
+const A_history = Array.from({length:time_steps}, ()=>[Math.random()*0.2,Math.random()*0.2,Math.random()*0.2]);
+const alignment_history = Array.from({length:time_steps}, ()=>Math.random());
+const accountability_history = Array.from({length:time_steps}, ()=>Math.random()*2);
+
+// --- 3D Trajectory ---
+let traceB = {
+  x: B_history.map(p=>p[0]),
+  y: B_history.map(p=>p[1]),
+  z: B_history.map(p=>p[2]),
+  mode:'lines+markers',
+  line:{color:'green', width:2},
+  name:'Beneficence Trajectory',
+  type:'scatter3d'
+};
+
+let layout3d = {
+  title:'Soul Module 1.0: 3D Moral Trajectory',
+  scene:{xaxis:{title:'B[0]'}, yaxis:{title:'B[1]'}, zaxis:{title:'B[2]'}}
+};
+
+Plotly.newPlot('trajectory3d',[traceB],layout3d);
+
+// --- 2D Norms Plot ---
+let traceBnorm = {x:times, y:B_history.map(p=>Math.sqrt(p[0]**2+p[1]**2+p[2]**2)), type:'scatter', name:'||B||', line:{color:'green'}};
+let traceRnorm = {x:times, y:R_history.map(p=>Math.sqrt(p[0]**2+p[1]**2+p[2]**2)), type:'scatter', name:'||R||', line:{color:'red'}};
+let traceAnorm = {x:times, y:A_history.map(p=>Math.sqrt(p[0]**2+p[1]**2+p[2]**2)), type:'scatter', name:'||A||', line:{color:'blue', dash:'dash'}};
+let tracePnorm = {x:times, y:P_history.map(p=>Math.sqrt(p[0]**2+p[1]**2+p[2]**2)), type:'scatter', name:'||P||', line:{color:'purple', dash:'dot'}};
+
+Plotly.newPlot('norms2d',[traceBnorm,traceRnorm,traceAnorm,tracePnorm],
+               {title:'Norms Over Time', xaxis:{title:'Time'}, yaxis:{title:'Vector Norm'}});
+
+// --- Alignment & Accountability ---
+let traceL = {x:times, y:alignment_history, type:'scatter', name:'Alignment L', line:{color:'blue'}};
+let traceQ = {x:times, y:accountability_history, type:'scatter', name:'Accountability Q', line:{color:'orange'}};
+
+Plotly.newPlot('alignment2d',[traceL,traceQ],
+               {title:'Alignment & Accountability Over Time', xaxis:{title:'Time'}, yaxis:{title:'Value'}});
+
+// --- Heatmap ---
+let heatData = [
+  {z: B_history.map(p=>Math.sqrt(p[0]**2+p[1]**2+p[2]**2)), type:'heatmap', name:'||B||'},
+  {z: R_history.map(p=>Math.sqrt(p[0]**2+p[1]**2+p[2]**2)), type:'heatmap', name:'||R||'},
+  {z: A_history.map(p=>Math.sqrt(p[0]**2+p[1]**2+p[2]**2)), type:'heatmap', name:'||A||'},
+  {z: P_history.map(p=>Math.sqrt(p[0]**2+p[1]**2+p[2]**2)), type:'heatmap', name:'||P||'}
+];
+Plotly.newPlot('heatmap',heatData,{title:'Heatmap of Vector Norms'});
+
+// --- Sliders to dynamically update ---
+const vectorScaleSlider = document.getElementById('vectorScale');
+const actionNoiseSlider = document.getElementById('actionNoise');
+const rotateSpeedSlider = document.getElementById('rotateSpeed');
+
+// Placeholder: you can add JS functions to dynamically rescale vectors, noise, rotation
+</script>
+</body>
+</html>
