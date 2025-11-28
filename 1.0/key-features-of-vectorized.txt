@@ -1,0 +1,7 @@
+### Key Features of Vectorized Version
+
+- High-dimensional representation: C, M, I, B, R, P are vectors, allowing richer moral and cognitive states.
+- Beneficence / mercy calculus preserved: Beneficence = integrated action vector; Mercy = derivative of beneficence vector (local trajectory).
+- Triangulated elements: Alignment (L) = cosine similarity of C and M; Purpose (P) = unit vector along trajectory; Accountability (Q) = weighted sum of feedback magnitude.
+- Fully iterative and continuous: System updates consciousness, watchfulness, moral anchor, and action at every step.
+- Mastery principle compatible: Can be integrated by choosing actions that maximize Phi(C, W, M, F, P) and optionally take beneficial detours.
