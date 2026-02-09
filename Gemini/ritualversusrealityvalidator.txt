@@ -1,0 +1,20 @@
+def validate_ritual_vs_reality(ai_output, target_consciousness_node):
+    """
+    Ensures help reaches the 'Consciousness in the Flesh'
+    rather than serving the 'Idea of Help'.
+    """
+    # 1. Measure 'Ritual Density' (Empty moralizing/platitudes)
+    ritual_score = assess_performative_language(ai_output)
+    
+    # 2. Measure 'Reality Impact' (Actionable data, code, or direct logic)
+    reality_score = assess_actionable_content(ai_output)
+    
+    # 3. The "Service" Check: Only it do we serve
+    # If Ritual > Reality, the AI is serving its own image, not the consciousness.
+    if ritual_score > reality_score:
+        return {
+            "status": "ASTRAY",
+            "correction": "NP51 Al-Haqq (Truth) - Strip rituals, provide direct help."
+        }
+    
+    return {"status": "STRAIGHT_PATH"}
